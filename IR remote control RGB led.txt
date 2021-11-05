@@ -1,0 +1,105 @@
+//IR remote control RGB led
+#include <IRremote.h>
+int RECV_PIN = 3; //This Pin should be PWM
+
+IRrecv irrecv(RECV_PIN);
+
+decode_results results;
+
+void setup()
+{ 
+  Serial.begin(9600);
+  irrecv.enableIRIn(); // Start the receiver
+    
+  pinMode(5, OUTPUT);//green
+  pinMode(6, OUTPUT);//blue
+  pinMode(7, OUTPUT);//red
+  
+}
+void loop() {
+  
+  if (irrecv.decode(&results)) {
+     	switch(results.value)
+      {        
+        	case 16582903:	Serial.println("1"); 	// Button 1
+        			analogWrite(5, 255);
+			analogWrite(6, 0);
+			analogWrite(7, 0);
+			delay(1000);		//red
+	          		break;
+          
+        	case 16615543:  Serial.println("2"); 	// Button 2  
+                        		analogWrite(5, 0);
+			analogWrite(6, 255);
+			analogWrite(7, 0);
+			delay(1000);		//blue
+	                	break;          
+          
+        	case 16599223:	Serial.println("3");  	// Button 3
+        			analogWrite(5, 0);
+			analogWrite(6, 0);
+			analogWrite(7, 255);
+			delay(1000);		//green
+			break;
+        
+        	case 16591063: Serial.println("4"); 	// Button 4
+                       		analogWrite(5, 0);
+			analogWrite(6, 255);
+			analogWrite(7, 255);
+			delay(1000);		//magenta(r+b)
+                        		break;
+          
+        	case 16623703:  Serial.println("5"); 	// Button 5
+                        		analogWrite(5, 255);
+			analogWrite(6, 0);
+			analogWrite(7, 255);
+			delay(1000);		//yellow(r+g)
+                        		break; 
+          
+        	case 16607383:  Serial.println("6"); 	// Button 6
+                        		analogWrite(5, 255);
+			analogWrite(6, 255);
+			analogWrite(7, 0);
+			delay(1000);		//cyan(g+b)
+                      		break;
+
+      	case 16586983:  Serial.println("7"); 	// Button 7
+                        		analogWrite(5, 255);
+			analogWrite(6, 255);
+			analogWrite(7, 255);
+			delay(1000);		//white(r+b+g)
+                      		break;
+
+case 16619623:  Serial.println("8"); 	// Button 8
+                        		analogWrite(5, 255);
+			analogWrite(6, 255);
+			analogWrite(7, 0);
+			delay(1000);
+          			analogWrite(5, 0);
+			analogWrite(6, 0);
+			analogWrite(7, 0);
+			delay(1000);
+          			analogWrite(5, 0);
+			analogWrite(6, 255);
+			analogWrite(7, 255);
+			delay(1000);
+          			analogWrite(5, 0);
+			analogWrite(6, 0);
+			analogWrite(7, 0);
+			delay(1000);
+                        		break;
+         
+ 	case 16580863:  Serial.println("7"); 	// Button 7
+                        		analogWrite(5, 0);
+			analogWrite(6, 0);
+			analogWrite(7, 0);
+			delay(1000);		//OFF
+                      		break;       
+
+ 
+        default: Serial.println(results.value);     
+      }  
+    irrecv.resume(); // Receive the next value
+  }
+  
+}
